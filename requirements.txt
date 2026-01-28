@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+jinja2
+requests
+beautifulsoup4
+opencv-python
+easyocr
+numpy
+

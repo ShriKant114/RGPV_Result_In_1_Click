@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Complete Class Result</title>
+</head>
+<body>
+    <h1>Enter Roll Number Details</h1>
+    <form action="/scrape" method="post">
+        <label for="prefix">Roll Number Prefix:</label>
+        <input type="text" id="prefix" placeholder="Ex. 0206CS221" name="prefix" required><br><br>
+        
+        <label for="semester">Semester:</label>
+        <input type="text" id="semester" placeholder="Ex. 6" name="semester" required><br><br>
+        
+        <label for="start">Start Roll:</label>
+        <input type="number" id="start" placeholder="Ex. 1" name="start" required><br><br>
+        
+        <label for="end">End Roll:</label>
+        <input type="number" id="end" name="end" placeholder="50" required><br><br>
+        
+        <button type="submit">Get Results</button>
+    </form>
+</body>
+</html>

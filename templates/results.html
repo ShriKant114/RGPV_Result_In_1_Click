@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+    <h1>Results</h1>
+    <p>Time taken: {{ elapsed }} seconds | Total results: {{ total }}</p>
+    <a href="/download">Download CSV</a><br><br>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Roll</th>
+                <th>Name</th>
+                <th>SGPA</th>
+                <th>CGPA</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.Roll }}</td>
+                <td>{{ result.Name }}</td>
+                <td>{{ result.SGPA }}</td>
+                <td>{{ result.CGPA }}</td>
+                <td>{{ result.Result }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/">Back</a>
+</body>
+</html>
