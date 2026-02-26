@@ -3,24 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Complete Class Result</title>
+    <title>Results Scraper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #faf8f3;
+            --charcoal: #2a2828;
+            --rust: #d4734b;
+            --slate: #5a6b7d;
+            --mint: #e8f3ed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Decorative Squares */
+        .bg-decoration {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .square-1 {
+            top: 10%;
+            left: 5%;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--rust);
+            opacity: 0.15;
+            transform: rotate(15deg);
+        }
+
+        .square-2 {
+            top: 60%;
+            right: 8%;
+            width: 60px;
+            height: 60px;
+            background: var(--mint);
+            opacity: 0.3;
+            transform: rotate(-20deg);
+        }
+
+        .square-3 {
+            bottom: 15%;
+            left: 10%;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--slate);
+            opacity: 0.1;
+            transform: rotate(45deg);
+        }
+
+        .wrapper {
+            max-width: 580px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.75rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            color: var(--slate);
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        form {
+            background: white;
+            border: 1.5px solid #e8e5dd;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(42, 40, 40, 0.03);
+        }
+
+        /* Form Decorative Squares */
+        .form-square {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .form-square-1 {
+            bottom: 25px;
+            left: 25px;
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--rust);
+            opacity: 0.2;
+            transform: rotate(12deg);
+        }
+
+        .form-square-2 {
+            top: 45%;
+            right: 20px;
+            width: 14px;
+            height: 14px;
+            background: var(--mint);
+            opacity: 0.5;
+            transform: rotate(-15deg);
+        }
+
+        .field {
+            margin-bottom: 1.75rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--charcoal);
+            margin-bottom: 0.6rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1.5px solid #dad6ca;
+            background: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--charcoal);
+            transition: all 0.2s ease;
+        }
+
+        input:hover {
+            border-color: #c5c1b4;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--rust);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(212, 115, 75, 0.08);
+        }
+
+        input::placeholder {
+            color: #aca99d;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .split .field {
+            margin-bottom: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 1.1rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--rust);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        button span {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        button:hover::before {
+            left: 0;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(42, 40, 40, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        button:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        button:disabled::before {
+            left: 0;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid var(--cream);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        button.loading .spinner {
+            display: block;
+        }
+
+        button.loading .button-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1.5rem;
+            }
+
+            .square-1, .square-2, .square-3 {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 0.9rem;
+            }
+
+            form {
+                padding: 2rem;
+            }
+
+            .split {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .split .field {
+                margin-bottom: 1.75rem;
+            }
+
+            .split .field:last-child {
+                margin-bottom: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Enter Roll Number Details</h1>
-    <form action="/scrape" method="post">
-        <label for="prefix">Roll Number Prefix:</label>
-        <input type="text" id="prefix" placeholder="Ex. 0206CS221" name="prefix" required><br><br>
-        
-        <label for="semester">Semester:</label>
-        <input type="text" id="semester" placeholder="Ex. 6" name="semester" required><br><br>
-        
-        <label for="start">Start Roll:</label>
-        <input type="number" id="start" placeholder="Ex. 1" name="start" required><br><br>
-        
-        <label for="end">End Roll:</label>
-        <input type="number" id="end" name="end" placeholder="50" required><br><br>
-        
-        <button type="submit">Get Results</button>
-    </form>
+    <!-- Background Decorative Squares -->
+    <div class="bg-decoration square-1"></div>
+    <div class="bg-decoration square-2"></div>
+    <div class="bg-decoration square-3"></div>
+
+    <div class="wrapper">
+        <div class="header">
+            <h1>Class Results</h1>
+            <p class="tagline">Batch result extractor for institutional records</p>
+        </div>
+
+        <form action="/scrape" method="post" id="resultForm">
+            <!-- Form Decorative Squares -->
+            <div class="form-square form-square-1"></div>
+            <div class="form-square form-square-2"></div>
+            
+            <div class="field">
+                <label for="prefix">Roll Pattern</label>
+                <input 
+                    type="text" 
+                    id="prefix" 
+                    name="prefix" 
+                    placeholder="0206CS221"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="semester">Semester</label>
+                <input 
+                    type="text" 
+                    id="semester" 
+                    name="semester" 
+                    placeholder="6"
+                    required
+                >
+            </div>
+
+            <div class="split">
+                <div class="field">
+                    <label for="start">From</label>
+                    <input 
+                        type="number" 
+                        id="start" 
+                        name="start" 
+                        placeholder="1"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="end">To</label>
+                    <input 
+                        type="number" 
+                        id="end" 
+                        name="end" 
+                        placeholder="50"
+                        required
+                    >
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <span>
+                    <span class="spinner"></span>
+                    <span class="button-text">Fetch Results</span>
+                </span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('resultForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function(e) {
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+        });
+    </script>
 </body>
 </html>
