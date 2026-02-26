@@ -4,34 +4,305 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #faf8f3;
+            --charcoal: #2a2828;
+            --rust: #d4734b;
+            --slate: #5a6b7d;
+            --mint: #e8f3ed;
+            --light-rust: #f4e8e3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            padding: 2rem;
+            color: var(--charcoal);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .title-section h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.85rem;
+            color: var(--slate);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 500;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            transition: all 0.25s ease;
+            border: 1.5px solid;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--charcoal);
+            color: var(--cream);
+            border-color: var(--charcoal);
+        }
+
+        .btn-primary:hover {
+            background: var(--rust);
+            border-color: var(--rust);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--charcoal);
+            border-color: #dad6ca;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--charcoal);
+            background: white;
+        }
+
+        .table-wrapper {
+            background: white;
+            border: 1.5px solid #e8e5dd;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--rust);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: var(--light-rust);
+        }
+
+        th {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            color: var(--charcoal);
+            border-bottom: 1.5px solid #dad6ca;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f0ede5;
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--cream);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            padding: 1rem 1.25rem;
+            color: var(--charcoal);
+        }
+
+        td:first-child {
+            font-weight: 500;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--slate);
+        }
+
+        td:nth-child(3), td:nth-child(4) {
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        td:last-child {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .status-pass {
+            color: #2d7a4f;
+        }
+
+        .status-fail {
+            color: var(--rust);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem;
+            }
+
+            .header {
+                flex-direction: column;
+            }
+
+            .title-section h1 {
+                font-size: 2rem;
+            }
+
+            .meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.85rem;
+            }
+
+            th {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            th:nth-child(3), th:nth-child(4),
+            td:nth-child(3), td:nth-child(4) {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Results</h1>
-    <p>Time taken: {{ elapsed }} seconds | Total results: {{ total }}</p>
-    <a href="/download">Download CSV</a><br><br>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Roll</th>
-                <th>Name</th>
-                <th>SGPA</th>
-                <th>CGPA</th>
-                <th>Result</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for result in results %}
-            <tr>
-                <td>{{ result.Roll }}</td>
-                <td>{{ result.Name }}</td>
-                <td>{{ result.SGPA }}</td>
-                <td>{{ result.CGPA }}</td>
-                <td>{{ result.Result }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <a href="/">Back</a>
+    <div class="container">
+        <div class="header">
+            <div class="title-section">
+                <h1>Batch Results</h1>
+                <div class="meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Processing Time</span>
+                        <span class="meta-value">{{ elapsed }}s</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Total Records</span>
+                        <span class="meta-value">{{ total }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <a href="/download" class="btn btn-primary">Download CSV</a>
+                <a href="/" class="btn btn-secondary">New Search</a>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="accent-bar"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll Number</th>
+                        <th>Student Name</th>
+                        <th>SGPA</th>
+                        <th>CGPA</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.Roll }}</td>
+                        <td>{{ result.Name }}</td>
+                        <td>{{ result.SGPA }}</td>
+                        <td>{{ result.CGPA }}</td>
+                        <td class="{% if result.Result|lower == 'pass' %}status-pass{% else %}status-fail{% endif %}">
+                            {{ result.Result }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
