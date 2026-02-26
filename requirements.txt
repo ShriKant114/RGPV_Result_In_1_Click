@@ -6,4 +6,3 @@ beautifulsoup4
 opencv-python
 easyocr
 numpy
-
